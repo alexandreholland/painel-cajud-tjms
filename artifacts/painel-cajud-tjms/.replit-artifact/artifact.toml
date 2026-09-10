@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Painel CAJUD TJMS"
+description = "Protótipo funcional do painel de monitoramento dos Administradores Judiciais do TJMS, com visão de concentração, alertas normativos do CNJ, acompanhamento de honorários e dados simulados do CPTEC/CAJUD para validação com a Corregedoria."
+version = "1.0.0"
+id = "artifacts/painel-cajud-tjms"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20137
+
+[services.development]
+run = "pnpm --filter @workspace/painel-cajud-tjms run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/painel-cajud-tjms", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/painel-cajud-tjms/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20137"
+BASE_PATH = "/"

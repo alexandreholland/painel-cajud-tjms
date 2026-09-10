@@ -1,0 +1,165 @@
+Você é um Engenheiro Frontend Sênior e Especialista em UI/UX para Dashboards e Sistemas Corporativos Judiciários. Sua missão é construir uma Single Page Application (SPA) completa, altamente polida, interativa e responsiva que simule com extrema fidelidade o **Painel de Monitoramento dos Administradores Judiciais (CPTEC / CAJUD) do Tribunal de Justiça de Mato Grosso do Sul (TJMS)**, desenvolvido em conjunto com a **Coordenadoria de Business Intelligence (CBI)** e a **Corregedoria-Geral de Justiça (CGJ)**.
+
+Todos os dados exibidos no painel têm como sistema de origem **único e centralizado** o **CPTEC** (*Cadastro Eletrônico de Peritos e Órgãos Técnicos e Científicos*), módulo **CAJUD** (*Cadastro Eletrônico de Administradores Judiciais*).
+
+A aplicação será utilizada como protótipo funcional de alta fidelidade para homologação com a Secretaria da Corregedoria, magistrados e para extração de capturas de tela (prints) que instruirão o Documento de Levantamento de Requisitos oficial (Demandas DTIC-1294 e DDS-22520), em cumprimento ao **Provimento CNJ nº 231/2026** (prazo limite: 26/10/2026) e à **Resolução CNJ nº 393/2021**.
+
+---
+
+### 1. STACK TECNOLÓGICA E DESIGN SYSTEM TJMS
+- **Framework:** React (Vite) com Tailwind CSS.
+- **Ícones:** `lucide-react` (utilize ícones como `Scale`, `ShieldAlert`, `AlertTriangle`, `CheckCircle2`, `Building2`, `UserCheck`, `Briefcase`, `DollarSign`, `Filter`, `RotateCcw`, `FileText`, `Layers`, `Search`, `Calculator`, `TrendingUp`, `BarChart3`, `PieChart`, `HelpCircle`, `Clock`).
+- **Gráficos:** `recharts` (com tooltips customizados estilizados, animações suaves e legendas claras).
+- **Paleta de Cores Institucional (Padrão Oficial TJMS / Power BI CBI):**
+  - **Barra Superior (Header Institucional):** Azul Marinho Profundo (`#0C2340` ou `#0B1E36`).
+  - **Aba de Navegação Ativa (Pill Button):** Laranja/Terracota institucional (`#E66C37`) com cantos totalmente arredondados (`rounded-full`), texto branco e sombra suave.
+  - **Abas Inativas:** Translúcido com borda suave (`rgba(255, 255, 255, 0.12)`), texto cinza claro (`#CBD5E1`) e hover destacado.
+  - **Fundo da Página:** Cinza claro neutro ergonômico de dashboard corporativo (`#F1F5F9` ou `#F4F6F9`).
+  - **Cards e Contêineres:** Fundo branco puro (`#FFFFFF`), cantos arredondados (`rounded-xl`), bordas finas sutis (`border border-slate-200`), sombra elegante (`shadow-sm`).
+  - **Cores de Alertas Normativos (Semáforo CNJ):**
+    - Regular / Conforme: Verde esmeralda (`#10B981` / fundo `#ECFDF5`).
+    - Atenção / Próximo ao Limite: Âmbar / Amarelo ouro (`#F59E0B` / fundo `#FFFBEB`).
+    - Alerta Crítico / Vedação CNJ: Vermelho intenso (`#EF4444` / fundo `#FEF2F2`).
+    - Cadastro Vencido / Pendente: Roxo / Cinza ardósia (`#6366F1` / `#64748B`).
+
+---
+
+### 2. ESTRUTURA DO LAYOUT E CABEÇALHO INSTITUCIONAL
+
+#### A. Cabeçalho Superior Institucional
+- **Lado Esquerdo:**
+  - Brasão / Balança da Justiça em dourado/branco.
+  - Textos:
+    - Linha superior institucional (uppercase, tracking-wider, text-xs text-slate-300): **"PODER JUDICIÁRIO • TRIBUNAL DE JUSTIÇA DE MATO GROSSO DO SUL"**
+    - Título principal destacado em branco (text-xl md:text-2xl font-bold): **"Painel de Monitoramento dos Administradores Judiciais"**
+    - Subtítulo explicativo em azul claro (`#93C5FD` text-xs md:text-sm): *"Base de Dados: Sistema CPTEC (Módulo CAJUD) • Provimento CNJ nº 231/2026 e Resolução CNJ nº 393/2021"*
+- **Centro-Direita (Abas de Navegação em Pílula):**
+  - Botão 1: **"Visão Geral & Concentração"** (Ativo por padrão).
+  - Botão 2: **"Monitoramento & Alertas CNJ"** (Aba de fiscalização de limites).
+  - Botão 3: **"Honorários & Remunerações"** (Aba de conformidade com tabela CNJ e pagamentos).
+- **Lado Direito:**
+  - Badge oficial da **CBI (Coordenadoria de BI)** com texto *"Desenvolvido pela Coordenadoria de BI"*.
+  - Indicador de sincronização temporal: *"Atualizado em: 10/09/2026 14:30:00"*.
+
+#### B. Barra de Filtros Globais Interativos (Estilo Power BI)
+Barra persistente com caixas brancas compactas, seletores dropdown reais e pesquisa rápida:
+- **Especialidade:** [Todas, Advocacia, Administração, Contabilidade, Economia, Sociedade Especializada (PJ)]
+- **Comarca:** [Todas, Campo Grande, Dourados, Três Lagoas, Corumbá, Ponta Porã]
+- **Situação Cadastral no CPTEC:** [Todas, Ativo/Habilitado, Pendente de Certidões, Vencido/Desatualizado, Inabilitado]
+- **Status do Alerta CNJ:** [Todos, Regular, Atenção (2 Grande Porte), VEDAÇÃO (>= 3 Grande Porte), Excesso (> 4 Processos)]
+- **Enquadramento Grande Porte:** [Todos, Apenas com Processos > R$ 300M, Apenas Processos Ordinários]
+- **Busca por Nome ou CPF/CNPJ:** Input de texto funcional com ícone de lupa.
+- **Botão "Limpar Filtros":** Botão com ícone `RotateCcw` para resetar todas as seleções instantaneamente.
+
+---
+
+### 3. CONTEÚDO DAS TRÊS ABAS FUNCIONAIS
+
+---
+
+#### ABA 1: VISÃO GERAL & CONCENTRAÇÃO (Aba Principal)
+
+1. **Linha de 6 KPIs Estratégicos de Governança:**
+   - **Card 1: Total Cadastrados no CPTEC:** `48` (38 PFs / 10 PJs especializadas).
+   - **Card 2: Processos de Insolvência Ativos:** `82` (54 Recuperações Judiciais e 28 Falências registradas).
+   - **Card 3: RJs de Grande Porte (> R$ 300M):** `11` mega-processos monitorados.
+   - **Card 4: Passivo Total sob Gestão:** `R$ 4.820.650.000,00` (Volume financeiro total das recuperandas).
+   - **Card 5: Administradores em Alerta CNJ:** `3` profissionais exigindo atenção/bloqueio normativo.
+   - **Card 6: Média de Processos por AJ Ativo:** `2,4` processos/profissional.
+
+2. **Linha de Gráficos Analíticos (Dois Blocos):**
+   - **Esquerda (60%): Gráfico de Barras Horizontais - "Concentração de Processos Ativos por Administrador Judicial"**
+     - Exibir os 8 administradores com maiores carteiras no CPTEC.
+     - Linha vertical tracejada marcando a média e destacando aqueles que atingiram 4 ou mais processos.
+   - **Direita (40%): Gráfico Donut (Rosca) - "Distribuição por Especialidade / Formação Profissional"**
+     - Fatias: Direito (42%), Contabilidade (25%), Administração (17%), Sociedades Especializadas PJ (12%), Economia (4%). Tooltip interativo mostrando percentual e quantidade.
+
+3. **Grid Mestre Consolidado (Tabela Principal de Administradores no CPTEC):**
+   - *Título:* **"Relação de Administradores Judiciais Cadastrados no CPTEC / CAJUD"** *(Clique em uma linha para detalhar a ficha cadastral e os processos)*
+   - *Colunas:*
+     - `ID`
+     - `Administrador / Sociedade` (Nome e badge PF ou PJ)
+     - `Órgão de Classe / Registro` (Ex: OAB/MS 12.345, CRC/MS 6.789)
+     - `Status no CPTEC` (Badge Verde: Habilitado; Laranja: Pendente; Vermelho: Inabilitado)
+     - `Processos Ativos` (Número de processos em andamento)
+     - `RJs Grande Porte (> 300M)` (Destaque visual se >= 2 ou >= 3)
+     - `Passivo sob Gestão (R$)`
+     - `Honorários Homologados (R$)`
+     - `Alerta CNJ` (Tag semafórica: Verde: "Regular", Amarelo: "Atenção (2)", Vermelho com badge de perigo: "VEDADO (Art. 7º - 3+ Grande Porte)")
+   - *Interatividade:* Ao clicar em qualquer linha, a linha ganha contorno e fundo destacado (`ring-2 ring-blue-600 bg-blue-50/60`), e os dois blocos Master-Detail inferiores são sincronizados.
+
+4. **Painel Master-Detail Inferior (Dois Cards Sincronizados Lado a Lado):**
+   - **Card Esquerdo: "Ficha Cadastral e Capacidade Operacional - CPTEC" (Borda superior azul `#0C2340`)**
+     - CPF/CNPJ mascarado.
+     - Nome do Responsável Técnico (se PJ).
+     - Validade da Habilitação Anual (Res. 393, Art. 4º, §1º).
+     - Checklist de Certidões do CPTEC com badges: Cível Estadual (OK), Criminal Estadual (OK), Tributária Federal (OK), Certidão Órgão de Classe (OK).
+     - Capacidade Operacional Declarada pelo AJ: "Declarou suportar até 5 processos simultâneos com equipe multidisciplinar de 8 profissionais (Art. 4º Prov. 231)".
+   - **Card Direito: "Processos e Nomeações Atribuídas no CPTEC" (Borda superior laranja `#E66C37`)**
+     - Tabela detalhada dos processos vinculados ao profissional no CPTEC:
+       - `Nº do Processo CNJ`
+       - `Nome da Recuperanda / Falida`
+       - `Tipo de Ação` (Recuperação Judicial, Falência)
+       - `Comarca / Vara` (Ex: Campo Grande - 1ª Vara Cível)
+       - `Juiz Nomeante`
+       - `Passivo Sujeito (R$)` (com badge vermelho se > 300 milhões)
+       - `Honorários Fixados (R$)`
+       - `Honorários Pagos (R$)` (Art. 19)
+       - `Situação da Atuação` (Em Exercício/Ativa, Concluída)
+
+---
+
+#### ABA 2: MONITORAMENTO & ALERTAS CNJ (Fiscalização das Normativas)
+
+Esta aba é focada exclusivamente na atuação fiscalizatória da Corregedoria-Geral de Justiça para garantia do prazo de 26/10/2026:
+1. **Cards de Alerta Máximo (Highlight Banners):**
+   - **Banner 1 (Vermelho): "Trava Art. 7º Provimento CNJ nº 231/2026 - Excesso em Processos de Grande Porte"**
+     - Exibe profissionais que atingiram 3 ou mais RJs com passivo > R$ 300M. Alerta textual: *"É vedada a realização de novas nomeações a estes profissionais pelo Juízo em todo o território nacional."*
+   - **Banner 2 (Amarelo): "Trava Art. 5º, §3º Resolução CNJ nº 393/2021 - Limite Simultâneo de 4 Processos"**
+     - Exibe profissionais com 4 ou mais RJs ou 4 falências ativas da mesma especialidade.
+   - **Banner 3 (Roxo): "Controle de Renovação Cadastral e Certidões Vencidas no CPTEC"**
+     - Identifica profissionais com habilitação anual expirada (Art. 4º, §1º Res. 393) pendentes de envio de certidões.
+
+2. **Gráfico de Concentração por Unidade Jurisdicional:**
+   - Visualização da distribuição percentual de nomeações entre os AJs por comarca, alertando se uma única sociedade detém mais de 30% das nomeações da mesma unidade judiciária.
+
+3. **Tabela de Auditoria com Ações Recomendadas da Corregedoria:**
+   - Colunas: `Administrador`, `Enquadramento Normativo`, `Motivo do Alerta`, `Processos Envolvidos`, `Data do Fato`, `Ação Recomendada (Oficiar Juízo, Bloqueio Provisório no CPTEC, Notificar para Regularização)`.
+
+---
+
+#### ABA 3: HONORÁRIOS & REMUNERAÇÕES (Transparência e Tabela CNJ)
+
+Esta aba atende aos Arts. 15, 16, 18 e 19 do Provimento CNJ nº 231/2026 com base nos dados financeiros registrados no CPTEC:
+1. **Simulador / Calculadora Interativa da Tabela de Referência (Anexo I do Prov. 231/2026):**
+   - Card interativo onde o usuário digita o Passivo Sujeito à Recuperação (ex: `R$ 450.000.000,00` ou `R$ 1.200.000.000,00`) ou utiliza botões de exemplo rápido.
+   - O simulador calcula instantaneamente a remuneração referencial em faixas marginais sucessivas:
+     - Faixa I (Até 300M): calculado com alíquota base (ex: 2.5% = R$ 7.500.000,00)
+     - Faixa II (300M a 500M): 1,0% sobre o excedente
+     - Faixa III (500M a 1B): 0,5% sobre o excedente
+     - Faixa IV (1B a 3B): 0,1% sobre o excedente
+     - Faixa V (3B a 10B): 0,01% sobre o excedente
+     - Faixa VI (Acima de 10B): 0,001% sobre o excedente
+   - Exibe o **Valor Referencial Total**, a **Taxa Efetiva Resultante (%)** e aviso normativo sobre motivação judicial exigida se os honorários destoarem da tabela (Art. 15, §4º).
+
+2. **Tabela de Registro de Pagamentos e Honorários Registrados no CPTEC (Art. 18 e 19):**
+   - Colunas: `Processo CNJ`, `Recuperanda / Falida`, `Administrador Nomeado`, `Passivo Apurado (R$)`, `Honorários Homologados (R$)`, `% Fixado`, `Referencial CNJ (R$)`, `Total Já Pago (R$)`, `Saldo Remanescente (R$)`, `Último Alvará/Pagamento (Data)`.
+   - Destaque condicional em amarelo quando os honorários fixados superarem a tabela referencial do CNJ.
+
+---
+
+### 4. BASE DE DADOS MOCK REALISTA DO CPTEC (MATO GROSSO DO SUL)
+Inclua uma base rica com **12 Administradores Judiciais** e seus respectivos processos registrados no CPTEC:
+- **Exemplo 1 (Alerta Crítico Art. 7º CNJ 231):** "Silva & Silva Administração Judicial Ltda" (PJ, Campo Grande) -> Possui 3 recuperações de grande porte ativas no CPTEC (Passivos: R$ 420M em Campo Grande, R$ 380M em Dourados, R$ 650M em Três Lagoas). **Status: VEDADO (Art. 7º)**.
+- **Exemplo 2 (Atenção Art. 7º):** "Dr. Roberto Medeiros Advogados Associados" (PF/PJ, Campo Grande) -> 2 RJs de grande porte ativas (R$ 310M e R$ 480M) + 1 RJ ordinária (R$ 45M). **Status: Atenção (2 Grande Porte)**.
+- **Exemplo 3 (Alerta Art. 5º Res. 393):** "Dra. Carolina Castro e Lima" (PF, Contadora, Dourados) -> Possui 5 Falências ativas. **Status: Alerta (Excesso > 4 Falências)**.
+- **Exemplo 4 (Cadastro Vencido):** "Gestão Empresarial Pantanal Ltda" (PJ, Corumbá) -> Certidão de Tributos Estaduais vencida há 45 dias no CPTEC, sem renovação anual. **Status: Cadastro Vencido**.
+- **Exemplos 5 a 12:** Administradores regulares com 1 ou 2 processos (empresas do agronegócio, cooperativas, usinas de bioenergia de MS), demonstrando total conformidade.
+
+---
+
+### 5. QUALIDADE DO CÓDIGO E RESPONSIVIDADE
+- Código React limpo, modular, tipado e sem erros de console.
+- Responsividade fluida para telas desktop corporativas (1920x1080 e 1366x768).
+- Filtros globais sincronizados com KPIs, gráficos e tabelas em tempo real.
+- Botão "Limpar Filtros" funcional, restaurando a visão geral instantaneamente.
