@@ -54,13 +54,18 @@ export interface AuditItem {
 
 export interface Payment {
   id: string;
-  processId: string;
   administratorId: string;
+  processNumber: string;
+  administratorName: string;
+  company: string;
+  companySize: 'Grande Porte' | 'Médio Porte' | 'ME/EPP (Art. 24, §5º)' | 'Produtor Rural (Art. 70-A)';
+  liabilities: number;
   fixedPercentage: number;
   referenceFees: number;
+  paymentMethod: string;
   paid: number;
   balance: number;
-  lastPayment: string;
+  lastPayment: string | null;
 }
 
 export const MOCK_ADMINISTRATORS: Administrator[] = [
@@ -541,32 +546,62 @@ export const MOCK_AUDIT_ITEMS: AuditItem[] = [
 export const MOCK_PAYMENTS: Payment[] = [
   {
     id: 'pay1',
-    processId: 'p1',
     administratorId: 'a1',
-    fixedPercentage: 1.5, 
-    referenceFees: 6300000.00,
-    paid: 2000000.00,
-    balance: 4300000.00,
-    lastPayment: '2023-09-15'
+    processNumber: '0801234-56.2023.8.12.0001',
+    administratorName: 'Silva & Silva Administração Judicial Ltda',
+    company: 'Agropecuária Boi Gordo S/A',
+    companySize: 'Grande Porte',
+    liabilities: 420000000,
+    referenceFees: 6300000,
+    paymentMethod: '36 parcelas de R$ 175.000,00',
+    fixedPercentage: 1.5,
+    paid: 2100000,
+    balance: 4200000,
+    lastPayment: '2026-09-14'
   },
   {
     id: 'pay2',
-    processId: 'p4',
     administratorId: 'a2',
-    fixedPercentage: 1.5, 
-    referenceFees: 4650000.00,
-    paid: 1000000.00,
-    balance: 3650000.00,
-    lastPayment: '2023-08-22'
+    processNumber: '0805555-44.2023.8.12.0002',
+    administratorName: 'Dr. Roberto Medeiros',
+    company: 'Transportes Dourados Ltda',
+    companySize: 'Grande Porte',
+    liabilities: 310000000,
+    referenceFees: 4700000,
+    paymentMethod: '24 parcelas de R$ 195.833,33',
+    fixedPercentage: 1.52,
+    paid: 1000000,
+    balance: 3700000,
+    lastPayment: '2026-08-21'
   },
   {
     id: 'pay3',
-    processId: 'p7',
     administratorId: 'a3',
-    fixedPercentage: 3.0, 
-    referenceFees: 240000.00,
-    paid: 150000.00,
-    balance: 90000.00,
-    lastPayment: '2023-11-05'
+    processNumber: '0808888-11.2023.8.12.0003',
+    administratorName: 'Dra. Carolina Castro e Lima',
+    company: 'Tecelagem MS ME',
+    companySize: 'ME/EPP (Art. 24, §5º)',
+    liabilities: 8000000,
+    referenceFees: 160000,
+    paymentMethod: '16 parcelas de R$ 10.000,00',
+    fixedPercentage: 2,
+    paid: 50000,
+    balance: 110000,
+    lastPayment: '2025-11-04'
+  },
+  {
+    id: 'pay4',
+    administratorId: 'a5',
+    processNumber: '0809999-22.2024.8.12.0004',
+    administratorName: 'Pereira & Associados Consultoria',
+    company: 'Fazenda Santa Maria (Produtor Rural)',
+    companySize: 'Produtor Rural (Art. 70-A)',
+    liabilities: 4200000,
+    referenceFees: 84000,
+    paymentMethod: '12 parcelas de R$ 7.000,00',
+    fixedPercentage: 2,
+    paid: 0,
+    balance: 84000,
+    lastPayment: null
   }
 ];

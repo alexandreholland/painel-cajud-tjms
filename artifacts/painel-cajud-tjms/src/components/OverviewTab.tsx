@@ -213,7 +213,7 @@ export function OverviewTab({ admins, isUnfiltered }: { admins: typeof MOCK_ADMI
                 <TableHead className="w-[80px]">ID</TableHead>
                 <TableHead>Administrador / Sociedade</TableHead>
                 <TableHead>Registro</TableHead>
-                <TableHead>Status CPTEC</TableHead>
+                <TableHead>Status CAJUD</TableHead>
                 <TableHead className="text-right whitespace-nowrap">Proc. Ativos</TableHead>
                 <TableHead className="text-right whitespace-nowrap">RJs &gt;300M</TableHead>
                 <TableHead className="text-right whitespace-nowrap">Passivo Total</TableHead>

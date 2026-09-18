@@ -72,7 +72,7 @@ export default function Dashboard() {
         Especialidade: a.specialty,
         Comarca: a.comarca,
         Registro: a.classRegistration,
-        'Status CPTEC': a.registrationStatus,
+        'Status CAJUD': a.registrationStatus,
         'Processos Ativos': a.activeProcesses,
         'RJs Grande Porte': MOCK_PROCESSES.filter(p => p.administratorId === a.id && p.liabilities > 300000000).length,
         'Passivo Total': a.liabilities,
@@ -98,21 +98,21 @@ export default function Dashboard() {
       const adminIds = new Set(filteredAdmins.map(a => a.id));
       const payments = MOCK_PAYMENTS.filter(p => adminIds.has(p.administratorId));
       const data = payments.map(p => {
-        const proc = MOCK_PROCESSES.find(pr => pr.id === p.processId);
-        const admin = filteredAdmins.find(a => a.id === p.administratorId);
         return {
-          'Processo CNJ': proc?.cnjNumber || '',
-          'Recuperanda / Falida': proc?.company || '',
-          Administrador: admin?.name || '',
-          Passivo: proc?.liabilities || 0,
+          'Processo CNJ': p.processNumber,
+          'Administrador Judicial': p.administratorName,
+          'Recuperanda / Falida': p.company,
+          'Porte da Empresa': p.companySize,
+          'Passivo Sujeito': p.liabilities,
           'Honorarios Homologados': p.referenceFees,
-          '% Fixado': p.fixedPercentage,
-          Pago: p.paid,
-          Saldo: p.balance,
-          'Data Ult Pgto': new Date(p.lastPayment).toLocaleDateString('pt-BR')
+          'Forma de Pagamento': p.paymentMethod,
+          '% Efetivo': p.fixedPercentage,
+          'Valores Pagos': p.paid,
+          'Saldo a Pagar': p.balance,
+          'Ultimo Pagamento': p.lastPayment ?? 'Pendente'
         };
       });
-      exportToCsv('cptec_remuneracoes.csv', data);
+      exportToCsv('cajud_honorarios_pagamentos.csv', data);
     }
   };
 
@@ -134,8 +134,8 @@ export default function Dashboard() {
             </div>
             <div className="hidden md:block">
               <h2 className="text-[10px] text-white/60 uppercase tracking-[0.2em] mb-0.5 font-semibold">Poder Judiciário • Tribunal de Justiça de Mato Grosso do Sul</h2>
-              <h1 className="text-lg font-bold tracking-tight leading-none">CPTEC / CAJUD</h1>
-              <p className="text-xs text-white/70 mt-1">Painel de Monitoramento de Administradores Judiciais - Provimento CNJ 231/2026</p>
+              <h1 className="text-lg font-bold tracking-tight leading-none">SISTEMA DOS AUXILIARES DA JUSTIÇA</h1>
+              <p className="text-xs text-white/70 mt-1">Módulo CAJUD (Administradores Judiciais) • Provimento CNJ nº 231/2026 e Res. CNJ nº 393/2021</p>
             </div>
           </div>
           
