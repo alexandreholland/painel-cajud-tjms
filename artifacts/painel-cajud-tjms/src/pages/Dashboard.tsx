@@ -135,7 +135,7 @@ export default function Dashboard() {
             <div className="hidden md:block">
               <h2 className="text-[10px] text-white/60 uppercase tracking-[0.2em] mb-0.5 font-semibold">Poder Judiciário • Tribunal de Justiça de Mato Grosso do Sul</h2>
               <h1 className="text-lg font-bold tracking-tight leading-none">SISTEMA DOS AUXILIARES DA JUSTIÇA</h1>
-              <p className="text-xs text-white/70 mt-1">Módulo CAJUD (Administradores Judiciais) • Provimento CNJ nº 231/2026 e Res. CNJ nº 393/2021</p>
+              <p className="text-xs text-white/70 mt-1">CAJUD (Cadastro de Administradores Judiciais)</p>
             </div>
           </div>
           
@@ -151,7 +151,6 @@ export default function Dashboard() {
           </div>
         </div>
       </header>
-
       {/* Main Content Area */}
       <main className="flex-1 container mx-auto px-4 py-6 flex flex-col gap-5">
         
